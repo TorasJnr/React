@@ -3,6 +3,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom"
 import Home from "./pages/Home"
 import About from "./pages/About"
 import Navbar from "./components/Navbar"
+import counter from "./components/counter"
 
 function App() {
   const year = new Date().getFullYear()
