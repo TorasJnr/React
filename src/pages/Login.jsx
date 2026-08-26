@@ -1,7 +1,12 @@
 
  import { useState } from "react";
+ import { axiosInstance, getErrorMessage } from "../api/axios";
+ import {ToastContainer, toast} from "react-toastify";
+ import { useNavigate } from "react-router-dom"
 
-export default function Login() {
+export default function Signup() {
+  const navigate = useNavigate()
+  const [user, setUser] = useState(null)
 
   const [formData, setFormData] = useState({
     email: "",
@@ -13,13 +18,21 @@ export default function Login() {
    setFormData((prev) => ({...prev, [name]: value}));
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log(formData)
+    try{
+      const response = await axiosInstance.post("/login", formData)
+      console.log(response.data)
+      setUser(response.data.data)
+      toast.success(response.data.message)
+    }catch(err) {
+      toast.error(getErrorMessage(err))
+    }
   }
 
     return(
 <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <ToastContainer/>
   <form onSubmit={handleSubmit} action="" method="POST" className="w-full h-full flex flex-col items-center gap-6 p-4 border border-gray-300 rounded-md">
     <div className="">
         <label htmlFor="email">Email</label>
@@ -34,7 +47,7 @@ export default function Login() {
     </div>
 
     <button type="submit">
-        Login
+        Signup
     </button>
   </form>
 </div>
