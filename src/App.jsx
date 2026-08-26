@@ -4,6 +4,7 @@ import Home from "./pages/Home"
 import About from "./pages/About"
 import Navbar from "./components/Navbar"
 import counter from "./components/counter"
+import Login from "./pages/Login"
 
 function App() {
   const year = new Date().getFullYear()
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/about" element={<About/>}/>
+          <Route path="/login" element={<Login/>}/>
         </Routes>
       </BrowserRouter>
     </>
