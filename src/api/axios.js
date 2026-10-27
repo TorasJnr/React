@@ -1,7 +1,7 @@
 
 import axios from "axios"
 
-export const axiosInstance = axios.create({
+export const axiosInstace = axios.create({
     baseURL: "https://backend-batch-9.vercel.app/api",
     withCredentials : true,
     headers: {

@@ -1,13 +1,13 @@
 
 
  import { useState } from "react";
- import { axiosInstance, getErrorMessage } from "../api/axios";
  import {ToastContainer, toast} from "react-toastify";
  import { useNavigate } from "react-router-dom"
+ import { useUserStore } from "../store/userStore"
 
 export default function Signup() {
   const navigate = useNavigate()
-  const [user, setUser] = useState(null)
+  const {signup} = useUserStore()
 
   const [formData, setFormData] = useState({
     username: "",
@@ -23,10 +23,9 @@ export default function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try{
-      const response = await axiosInstance.post("/signup", formData)
-      console.log(response.data)
-      setUser(response.data.data)
-      toast.success(response.data.message)
+      const data = await signup(formData)
+      toast.success(data.message)
+      navigate("/")
     }catch(err) {
       toast.error(getErrorMessage(err))
     }
@@ -35,9 +34,6 @@ export default function Signup() {
     return(
 <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <ToastContainer/>
-  <h1>
-    Welcome {user ? user.username : "Guest"}
-  </h1>
   <form onSubmit={handleSubmit} action="" method="POST" className="w-full h-full flex flex-col items-center gap-6 p-4 border border-gray-300 rounded-md">
 
     <div className="">
@@ -53,14 +49,14 @@ export default function Signup() {
             onChange={handleChange} className="w-full h-full border border-gray-300 rounded-md p-2" />
     </div>
 
-    <div>
+    <div>
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" value={formData.password} autoComplete="current-password" 
           onChange={handleChange} className="w-full h-full border border-gray-300 rounded-md p-2" />
     </div>
 
     <button type="submit">
-        Login
+        SignUp
     </button>
   </form>
 </div>

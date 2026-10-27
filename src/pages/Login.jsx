@@ -1,12 +1,15 @@
 
  import { useState } from "react";
- import { axiosInstance, getErrorMessage } from "../api/axios";
  import {ToastContainer, toast} from "react-toastify";
  import { useNavigate } from "react-router-dom"
+ import { useUserStore } from "../store/userStore";
+ import { Loader } from "../components/Loader";
 
-export default function Signup() {
+export default function Login() {
   const navigate = useNavigate()
-  const [user, setUser] = useState(null)
+  const {login} = useUserStore()
+
+  const [loading, setLoading] = useState(false)
 
   const [formData, setFormData] = useState({
     email: "",
@@ -21,12 +24,14 @@ export default function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try{
-      const response = await axiosInstance.post("/login", formData)
-      console.log(response.data)
-      setUser(response.data.data)
-      toast.success(response.data.message)
+      setLoading(true)
+     const data = await login(formData)
+     toast.success(data.message)
+     navigate("/")
     }catch(err) {
-      toast.error(getErrorMessage(err))
+      toast.error(err.message)
+    }finally{
+      setLoading(false)
     }
   }
 
@@ -46,9 +51,15 @@ export default function Signup() {
           onChange={handleChange} className="w-full h-full border border-gray-300 rounded-md p-2" />
     </div>
 
-    <button type="submit">
-        Signup
-    </button>
+      <div className="w-40">
+        {loading ? <Loader/> :
+        <button type="submit" className="bg-blue-500 text-white p-5 rounded-lg w-full">
+        Login
+        </button>
+        }
+      </div>
+
+    
   </form>
 </div>
     )
